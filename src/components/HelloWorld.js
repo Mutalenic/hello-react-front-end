@@ -1,66 +1,62 @@
-import React from "react";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
+import React from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
-const ADD_GREETING = "ADD_GREETING";
-export const addGreeting = (name) => ({
-    type: ADD_GREETING,
-    json: {
-        name,
-    },
-});
+const GET_GREETINGS_REQUEST = 'GET_GREETINGS_REQUEST';
+export const GET_GREETINGS_SUCCESS = 'GET_GREETINGS_SUCCESS';
+
+export function getGreetingsSuceess(json) {
+  return {
+    type: GET_GREETINGS_SUCCESS,
+    json,
+  };
+}
 
 function getGreetings() {
-    return (dispatch) => {
-        dispatch({ type: "GET_GREETINGS" });
+  return async (dispatch) => {
+    dispatch({ type: GET_GREETINGS_REQUEST });
 
-        return fetch("/greetings")
-            .then((response) => response.json())
-            .then((json) => {
-                dispatch({ type: "GET_GREETINGS_SUCCESS", json });
-            }
-            )
-            .catch((error) => {
-                dispatch({ type: "GET_GREETINGS_ERROR", error });
-            }
-            );
-
-    };
+    try {
+      const response = await fetch('/greetings');
+      const json = await response.json();
+      dispatch({ type: 'GET_GREETINGS_SUCCESS', json });
+    } catch (error) {
+      dispatch({ type: 'GET_GREETINGS_ERROR', error });
+    }
+  };
 }
 
 class HelloWorld extends React.Component {
-    componentDidMount() {
-        this.props.getGreetings();
-    }
+  componentDidMount() {
+  }
 
-    render() {
-        return (
-            <div className="container">
-                <p>Hi</p>
-                <button
-                    onClick={() => {
-                        this.props.addGreeting("Hello");
-                    }
-                    }
-                >
-                    Add greeting
-                </button>
-                <br />
-                <p>
-                    {randomGreeting.name}
-                </p>
-            </div>
-        );
-    }
+  render() {
+    const greeetings = this.props;
+
+    return (
+      <div className="container">
+        <p>Hi</p>
+        <button
+          type="button"
+          onClick={() => this.props.getGreetings()}
+        >
+          Add a greeting
+        </button>
+        <br />
+        <p>
+          {greeetings.name}
+        </p>
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = createStructuredSelector({
-    randomGreetings: (state) => state.greetings[0],
+  greeetings: (state) => state.greetings[0],
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    addGreeting: (name) => dispatch(addGreeting(name)),
-    getGreetings: () => dispatch(getGreetings()),
-});
+const mapDispatchToProps = { getGreetings };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HelloWorld);
