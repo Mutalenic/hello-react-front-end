@@ -1,33 +1,9 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import { GET_GREETINGS_SUCCESS } from '../components/HelloWorld';
+import greetings from './greetings/greetings';
 
-const initialState = {
-  greetings: [
-    {
-      name: 'Hello',
-    },
-  ],
+const rootReducer = combineReducers({ greetings });
 
-};
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
-function reducer(state = initialState, action) {
-  switch (action.type) {
-    case GET_GREETINGS_SUCCESS:
-      return {
-        ...state,
-        greetings: [...state.greetings, action.json],
-      };
-    default:
-      return state;
-  }
-}
-
-export default function configureStore() {
-  const store = createStore(
-    reducer,
-    initialState,
-    applyMiddleware(thunk),
-  );
-  return store;
-}
+export default store;
