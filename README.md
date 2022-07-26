@@ -10,9 +10,6 @@
 
 # Getting Started
 
-## Prerequisites:
-
-
 - Create an account on github
 
 - Install gitbash or use git on the command line.
