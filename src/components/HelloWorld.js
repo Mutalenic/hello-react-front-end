@@ -5,7 +5,6 @@ import { getGreetingFromServer } from '../redux/greetings/greetings';
 const HelloWorld = () => {
   const dispatch = useDispatch();
   const { greetings } = useSelector((state) => state.greetings);
-  console.log(greetings);
   const [state, setState] = useState(false);
 
   const newGreeting = () => {
@@ -25,7 +24,7 @@ const HelloWorld = () => {
     <div className="container">
       <h1>Hello in Five Languages 😃</h1>
       <button type="button" onClick={newGreeting}>Get Greetings</button>
-      <h1 className="greeting">{state ? greetings.name : 'just a minute...'}</h1>
+      <h1 className="greeting">{state ? greetings.name : ''}</h1>
     </div>
   );
 };
