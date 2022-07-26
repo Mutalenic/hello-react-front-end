@@ -25,6 +25,5 @@ export default function reducer(state = initialState, action = {}) {
 export const getGreetingFromServer = () => async (dispatch) => {
   const response = await fetch(url);
   const greeting = await response.json();
-  console.log(greeting);
   dispatch(getGreeting(greeting));
 };
