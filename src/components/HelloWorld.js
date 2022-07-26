@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getGreetingFromServer } from '../redux/greetings/greetings.js';
+import { getGreetingFromServer } from './redux/greetings/greetings.js'; 
 
 const HelloWorld = () => {
   const dispatch = useDispatch();
